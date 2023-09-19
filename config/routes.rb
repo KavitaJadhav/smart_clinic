@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :doctors, only: [] do
         member do
           get :working_days
+          get :appointments
         end
       end
 

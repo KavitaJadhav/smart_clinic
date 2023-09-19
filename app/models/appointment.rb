@@ -10,6 +10,8 @@ class Appointment < ApplicationRecord
 
   before_create :set_status
 
+  scope :upcoming_week, -> { where(date: [Date.today..Date.today + 1.week], status: STATUS::Created) }
+
   def cancel
     update(status: STATUS::Canceled)
   end
