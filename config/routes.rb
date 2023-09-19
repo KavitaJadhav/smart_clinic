@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   # root "articles#index"
   namespace :api do
     namespace :v1 do
+      resources :doctors, only: [] do
+        member do
+          get :working_days
+        end
+      end
       post "authentication/login", to: "authentication#login"
     end
   end

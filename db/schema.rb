@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_19_160401) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_19_163752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,4 +23,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_160401) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "working_days", force: :cascade do |t|
+    t.bigint "doctor_id", null: false
+    t.date "date"
+    t.time "from_time"
+    t.time "to_time"
+    t.index ["doctor_id"], name: "index_working_days_on_doctor_id"
+  end
+
+  add_foreign_key "working_days", "users", column: "doctor_id"
 end

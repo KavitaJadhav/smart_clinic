@@ -1,4 +1,5 @@
 en:
   messages:
     error:
+      unauthorised: "User doesn't have permission to perform this action"
       invalid_creds: "Invalid credentials"
