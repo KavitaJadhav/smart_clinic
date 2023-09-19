@@ -10,7 +10,12 @@ Rails.application.routes.draw do
           get :working_days
         end
       end
-      resources :appointments, only: [:create, :update]
+
+      resources :appointments, only: [:create, :update] do
+        member do
+          put :cancel
+        end
+      end
 
       post "authentication/login", to: "authentication#login"
     end

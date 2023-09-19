@@ -10,6 +10,10 @@ class Appointment < ApplicationRecord
 
   before_create :set_status
 
+  def cancel
+    update(status: STATUS::Canceled)
+  end
+
   private
 
   def set_status

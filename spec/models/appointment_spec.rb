@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  let(:appointment) { Appointment.new }
+
   describe '.associations' do
     it { should belong_to(:doctor) }
     it { should belong_to(:patient) }
@@ -20,4 +22,11 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#cancel' do
+    it 'it should cancel an appointment' do
+      expect(appointment).to receive(:update).with(status: Appointment::STATUS::Canceled)
+
+      appointment.cancel
+    end
+  end
 end

@@ -82,4 +82,43 @@ RSpec.describe "Api::V1::Appointments", type: :request do
       end
     end
   end
+
+  describe "PUT /api/v1/appointments/:id/cancel" do
+    let(:appointment) { Appointment.create(date: Date.today, from_time: '19:30', to_time: '19:40', doctor: doctor, patient: patient) }
+
+    context 'when valid auth token' do
+      it 'should cancel appointment' do
+        expect(JsonWebToken).to receive(:decode).and_return({ id: patient.id })
+
+        put "/api/v1/appointments/#{appointment.id}/cancel", headers: { 'Authorization' => 'abc def' }
+
+        expect(response).to have_http_status(200)
+
+        appointment.reload
+        expect(appointment.status).to eq(Appointment::STATUS::Canceled)
+      end
+    end
+
+    context "when valid auth token but appointment doesn't belong to user" do
+      let(:patient2) { Patient.create(first_name: 'Kavita', last_name: 'Jadhav', email: 'pkavita2@mail.com') }
+
+      it 'should return unauthorized error response' do
+        expect(JsonWebToken).to receive(:decode).and_return({ id: patient2.id })
+
+        put "/api/v1/appointments/#{appointment.id}/cancel", headers: { 'Authorization' => 'abc def' }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'when invalid auth token' do
+      it 'should return unauthorized error response' do
+        expect(JsonWebToken).to receive(:decode).and_return({ id: 1234 })
+
+        put "/api/v1/appointments/#{appointment.id}/cancel", headers: { 'Authorization' => 'abc def' }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end
