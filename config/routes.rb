@@ -18,6 +18,12 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :patients, only: [] do
+        member do
+          get :appointments
+        end
+      end
+
       post "authentication/login", to: "authentication#login"
     end
   end
