@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::Doctors", type: :request do
       let!(:working_day1) { WorkingDay.create(doctor_id: doctor.id, date: Date.today, from_time: Time.now, to_time: Time.now + 5.hours) }
       let!(:working_day2) { WorkingDay.create(doctor_id: doctor.id, date: Date.today + 8.days, from_time: Time.now, to_time: Time.now + 5.hours) }
 
-      it 'should generate and return jtw token' do
+      it 'should return doctors schedule' do
         expect(JsonWebToken).to receive(:decode).and_return({ id: doctor.id })
 
         get "/api/v1/doctors/#{doctor.id}/working_days", headers: { 'Authorization' => 'abc def' }

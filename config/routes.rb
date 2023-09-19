@@ -10,6 +10,8 @@ Rails.application.routes.draw do
           get :working_days
         end
       end
+      resources :appointments, only: [:create]
+
       post "authentication/login", to: "authentication#login"
     end
   end

@@ -24,4 +24,8 @@ class ApplicationController < ActionController::API
     render_error_response(:unauthorized, I18n.t('messages.error.unauthorised')) unless @current_user.doctor?
   end
 
+  def requested_by_patient
+    render_error_response(:unauthorized, I18n.t('messages.error.unauthorised')) unless @current_user.patient?
+  end
+
 end
