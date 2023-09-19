@@ -16,4 +16,16 @@ class Api::V1::DoctorsController < ApplicationController
       render status: :no_content
     end
   end
+
+  def availability
+    @doctor = Doctor.find(params['id'])
+    working_days = @doctor.working_days.for_week
+    daily_availability = {}
+
+    working_days.each do |day|
+      daily_availability[day.date] = day.availability
+    end
+
+    render json: daily_availability, status: :ok
+  end
 end

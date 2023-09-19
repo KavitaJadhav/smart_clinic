@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         member do
           get :working_days
           get :appointments
+          get :availability
         end
       end
 

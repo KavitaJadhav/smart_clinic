@@ -95,4 +95,30 @@ RSpec.describe "Api::V1::Doctors", type: :request do
       end
     end
   end
+
+  describe "GET /api/v1/doctors/:id/availability" do
+    let!(:working_day1) { WorkingDay.create(doctor_id: doctor.id, date: Date.today, from_time: '10:00', to_time: '11:00') }
+    let!(:working_day2) { WorkingDay.create(doctor_id: doctor.id, date: Date.today + 1.day, from_time: '10:00', to_time: '11:00') }
+
+    context 'when valid auth token' do
+      it 'should return upcoming appointments schedule' do
+        expect(JsonWebToken).to receive(:decode).and_return({ id: doctor.id })
+
+        get "/api/v1/doctors/#{doctor.id}/availability", headers: { 'Authorization' => 'abc def' }
+
+        expect(response).to have_http_status(200)
+        expect(response.parsed_body.size).to eq(2)
+      end
+    end
+
+    context 'when invalid auth token' do
+      it 'should return unauthorized error response' do
+        expect(JsonWebToken).to receive(:decode).and_return({ id: 1234 })
+
+        get "/api/v1/doctors/#{doctor.id}/availability", headers: { 'Authorization' => 'abc def' }
+
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end

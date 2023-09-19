@@ -5,6 +5,7 @@ require "rails/all"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+APPLICATION_CONFIGS = YAML.load_file('config/application_config.yml')
 
 module SmartClinic
   class Application < Rails::Application

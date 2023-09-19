@@ -5,4 +5,8 @@ class Doctor < User
   def upcoming_appointments
     appointments.upcoming_week
   end
+
+  def pending_appointments(date)
+    appointments.where(date: date).pending.order(:from_time)
+  end
 end
