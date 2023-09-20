@@ -3,7 +3,7 @@ class WorkingDay < ApplicationRecord
 
   scope :for_week, -> { where(date: [Date.today..Date.today + 1.week]) }
 
-  def availability
+  def available_slots
     slots = []
 
     start_time = from_time
@@ -15,7 +15,7 @@ class WorkingDay < ApplicationRecord
     if daily_appointments.empty?
       while end_time > start_time do
         slots << DateTimeUtil.time(start_time)
-        start_time = start_time + APPLICATION_CONFIGS['appointment_duration_in_minutes'].minutes
+        start_time = start_time + appointment_duration
       end
       return slots
     end
@@ -23,17 +23,23 @@ class WorkingDay < ApplicationRecord
     next_appointment = daily_appointments[0]
     appointment_index = 0
     while end_time > start_time do
-      slot_end_time = start_time + APPLICATION_CONFIGS['appointment_duration_in_minutes'].minutes
+      slot_end_time = start_time + appointment_duration
       if next_appointment && slot_end_time > next_appointment.from_time
         start_time = next_appointment.to_time
         appointment_index = appointment_index + 1
         next_appointment = daily_appointments[appointment_index]
       else
         slots << DateTimeUtil.time(start_time)
-        start_time = start_time + APPLICATION_CONFIGS['appointment_duration_in_minutes'].minutes
+        start_time = start_time + appointment_duration
       end
     end
 
     slots
+  end
+
+  private
+
+  def appointment_duration
+    APPLICATION_CONFIGS['appointment_duration_in_minutes'].minutes
   end
 end

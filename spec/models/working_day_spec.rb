@@ -12,7 +12,7 @@ RSpec.describe WorkingDay, type: :model do
         working_day = WorkingDay.new(date: Date.today, from_time: '10:00', to_time: '11:00')
         expect(working_day).to receive(:doctor).and_return(doctor)
 
-        expect(working_day.availability).to eq(['10:00', '10:15', '10:30', '10:45'])
+        expect(working_day.available_slots).to eq(['10:00', '10:15', '10:30', '10:45'])
       end
     end
 
@@ -23,7 +23,7 @@ RSpec.describe WorkingDay, type: :model do
 
         expect(working_day).to receive(:doctor).and_return(doctor)
 
-        expect(working_day.availability).to eq(['23:30', '23:45', '00:00', '00:15'])
+        expect(working_day.available_slots).to eq(['23:30', '23:45', '00:00', '00:15'])
       end
     end
 
@@ -36,7 +36,7 @@ RSpec.describe WorkingDay, type: :model do
 
         expect(working_day).to receive(:doctor).and_return(doctor)
 
-        expect(working_day.availability).to eq(['10:15', '10:45'])
+        expect(working_day.available_slots).to eq(['10:15', '10:45'])
       end
     end
   end

@@ -41,6 +41,14 @@ class Api::V1::AppointmentsController < ApplicationController
   end
 
   def requested_by_patient_or_doctor
-    render_error_response(:unauthorized, I18n.t('messages.error.unauthorized')) unless (@current_user.patient? && @appointment.patient_id == @current_user.id) || @appointment.doctor_id == @current_user.id
+    render_error_response(:unauthorized, I18n.t('messages.error.unauthorised')) unless belongs_to_patient? || belongs_to_doctor?
+  end
+
+  def belongs_to_patient?
+    @current_user.patient? && @appointment.patient_id == @current_user.id
+  end
+
+  def belongs_to_doctor?
+    @appointment.doctor_id == @current_user.id
   end
 end

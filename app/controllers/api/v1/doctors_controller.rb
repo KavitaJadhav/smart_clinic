@@ -23,7 +23,7 @@ class Api::V1::DoctorsController < ApplicationController
     daily_availability = {}
 
     working_days.each do |day|
-      daily_availability[day.date] = day.availability
+      daily_availability[day.date] = day.available_slots
     end
 
     render json: daily_availability, status: :ok
